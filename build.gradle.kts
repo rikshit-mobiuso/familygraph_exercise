@@ -8,6 +8,7 @@ repositories {
 }
 
 dependencies {
+    implementation("junit:junit:3.8.2")
     compile( kotlin("stdlib") )
     compile("com.google.guava:guava:18.0")
     compile( "org.apache.commons:commons-lang3:3.3.2")
