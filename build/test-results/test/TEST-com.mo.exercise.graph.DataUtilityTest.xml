@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mo.exercise.graph.DataUtilityTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-02-04T06:01:44" hostname="RIKSHIT-PC" time="0.028">
+  <properties/>
+  <testcase name="testGetRelationShipCount" classname="com.mo.exercise.graph.DataUtilityTest" time="0.016"/>
+  <testcase name="testGetAllPeople" classname="com.mo.exercise.graph.DataUtilityTest" time="0.0"/>
+  <testcase name="testGetExtendedFamilyCount" classname="com.mo.exercise.graph.DataUtilityTest" time="0.011"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
