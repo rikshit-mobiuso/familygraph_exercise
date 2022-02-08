@@ -3,13 +3,15 @@ package com.mo.exercise.graph;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
-
 public class DataUtility
 {
+    String filePathOfPeopleCsv = "src/test/resources/people.csv";
+    String filePathOfRelationshipsCsv = "src/test/resources/relationships.csv";
+
     public List<People> getAllPeople()
     {
         List<People> peopleList = new ArrayList<>();
-        try (FileReader fr = new FileReader("src/test/resources/people.csv");
+        try (FileReader fr = new FileReader(filePathOfPeopleCsv);
              BufferedReader br = new BufferedReader(fr);)
         {
             // read line by line
@@ -32,7 +34,7 @@ public class DataUtility
     public List<Relatives> getAllPeopleRelationShip(List<People> listPeople)
     {
         List<Relatives> relationshipsList = new ArrayList<>();
-        try (FileReader fr = new FileReader("src/test/resources/relationships.csv");
+        try (FileReader fr = new FileReader(filePathOfRelationshipsCsv);
              BufferedReader br = new BufferedReader(fr);)
         {
             // read line by line
