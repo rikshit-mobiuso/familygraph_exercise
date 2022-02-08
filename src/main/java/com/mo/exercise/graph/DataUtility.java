@@ -8,59 +8,36 @@ public class DataUtility
     String filePathOfPeopleCsv = "src/test/resources/people.csv";
     String filePathOfRelationshipsCsv = "src/test/resources/relationships.csv";
 
-    public List<People> getAllPeople()
-    {
-        List<People> peopleList = new ArrayList<>();
-        try (FileReader fr = new FileReader(filePathOfPeopleCsv);
-             BufferedReader br = new BufferedReader(fr);)
-        {
-            // read line by line
-            String line;
-            while ((line = br.readLine()) != null)
-            {
-                String[] peoples = line.split(",");
-                People p = new People(peoples[0], peoples[1], Integer.valueOf(peoples[2]));
-                peopleList.add(p);
-            }
-
-        }
-        catch (IOException e)
-        {
-            System.err.format("IOException: %s%n", e);
-        }
-        return peopleList;
-    }
-
-    public List<Relatives> getAllPeopleRelationShip(List<People> listPeople)
-    {
-        List<Relatives> relationshipsList = new ArrayList<>();
-        try (FileReader fr = new FileReader(filePathOfRelationshipsCsv);
-             BufferedReader br = new BufferedReader(fr);)
-        {
-            // read line by line
-            String line;
-            while ((line = br.readLine()) != null)
-            {
-                if (line.trim().length() == 0)
-                {
-                    continue; // Skip blank lines
-                }
-                String[] rr = line.split(",");
-                People currentPerson = getPersonByEmail(listPeople, rr[0]);
-                People nextPerson = getPersonByEmail(listPeople, rr[2]);
-                if (null != nextPerson && null != currentPerson)
-                {
-                    currentPerson.addRelationShip(nextPerson, rr[1]);
-                }
-            }
-
-        }
-        catch (IOException e)
-        {
-            System.err.format("IOException: %s%n", e);
-        }
-        return relationshipsList;
-    }
+//    public List<Relatives> getAllPeopleRelationShip(List<People> listPeople)
+//    {
+//        List<Relatives> relationshipsList = new ArrayList<>();
+//        try (FileReader fr = new FileReader(filePathOfRelationshipsCsv);
+//             BufferedReader br = new BufferedReader(fr);)
+//        {
+//            // read line by line
+//            String line;
+//            while ((line = br.readLine()) != null)
+//            {
+//                if (line.trim().length() == 0)
+//                {
+//                    continue; // Skip blank lines
+//                }
+//                String[] rr = line.split(",");
+//                People currentPerson = getPersonByEmail(listPeople, rr[0]);
+//                People nextPerson = getPersonByEmail(listPeople, rr[2]);
+//                if (null != nextPerson && null != currentPerson)
+//                {
+//                    currentPerson.addRelationShip(nextPerson, rr[1]);
+//                }
+//            }
+//
+//        }
+//        catch (IOException e)
+//        {
+//            System.err.format("IOException: %s%n", e);
+//        }
+//        return relationshipsList;
+//    }
 
     private People getPersonByEmail(List<People> peopleList, String email)
     {
@@ -76,49 +53,86 @@ public class DataUtility
     public static void main(String[] args) throws IOException
     {
         DataUtility r = new DataUtility();
-        List<People> allPeople = r.getAllPeople();
+        CsvDataReader csvDataReader = new CsvDataReader();
         //System.out.println(allPeople.toString());
 
-        allPeople.forEach(people -> {
-            System.out.println(r.getRelationShipCount(people.getName()));
-            System.out.println(people.getName() + " : " + r.getExtendedFamilyCount(people.getName()));
+        List<People> peopleList = csvDataReader.getAllPeople();
+        List<String> relationshipList = csvDataReader.getAllPeopleRelationShip(peopleList);
+        HashMap<People,List<Relatives>> graphOfRelations = r.mapAllRelationship(peopleList,relationshipList);
+
+        graphOfRelations.forEach( (people,relativesList) -> {
+            System.out.print(people.getName() + " : " + relativesList.size() + " : ");
+            relativesList.forEach(relatives -> {
+                System.out.print(relatives.toString() + " ");
+            });
+            System.out.println();
+            System.out.println(people.getName() + " : " + r.getExtendedFamilyCount(people,graphOfRelations));
         });
 
     }
 
-    public int getRelationShipCount(String name)
-    {
-        List<People> peopleList = getAllPeople();
-        getAllPeopleRelationShip(peopleList);
-        // should be based on the unique key as email
-        List<People> peoples = peopleList.stream().filter(people -> people.getName().equalsIgnoreCase(name))
-                .collect(Collectors.toList());
-        if (null == peoples || peoples.size() > 1 || peoples.isEmpty())
-        {
-            return 0;
-        }
-        return peoples.get(0).getRelationShipCount();
+    public List<Relatives> getRelativeList(People people,List<People> peopleList, List<String> relationshipList){
+        List<Relatives> relativesList = new ArrayList<>();
+
+        relationshipList.forEach(line -> {
+            String[] rel = line.split(",");
+
+            if(people.getEmail().equals(rel[0])){
+                Relation relation = Relation.valueOf(rel[1]);
+                People anotherPerson = getPersonByEmail(peopleList, rel[2]);
+
+                relativesList.forEach(relatives -> {
+                    if(relatives.getPerson().getEmail().equals(anotherPerson.getEmail())){
+                        return;
+                    }
+                });
+
+                Relatives relatives = new Relatives(relation,anotherPerson);
+                relativesList.add(relatives);
+
+            }else if(people.getEmail().equals(rel[2])){ // for bi-direction relationship
+                Relation relation = Relation.valueOf(rel[1]);
+                People anotherPerson = getPersonByEmail(peopleList, rel[0]);
+
+                relativesList.forEach(relatives -> {
+                    if(relatives.getPerson().getEmail().equals(anotherPerson.getEmail())){
+                        return;
+                    }
+                });
+
+                Relatives relatives = new Relatives(relation,anotherPerson);
+                relativesList.add(relatives);
+            }
+        });
+        return relativesList;
     }
 
-    public int getExtendedFamilyCount(String name)
-    {
-        List<People> peopleList = getAllPeople();
-        getAllPeopleRelationShip(peopleList);
+    public HashMap<People,List<Relatives>> mapAllRelationship(List<People> peopleList, List<String> relationshipList){
+        HashMap<People,List<Relatives>> graphOfRelations = new HashMap<>();
 
+        peopleList.forEach(people -> {
+            List<Relatives> relativesList = getRelativeList(people,peopleList,relationshipList);
+            graphOfRelations.put(people,relativesList);
+        });
+
+        return graphOfRelations;
+    }
+
+    public int getExtendedFamilyCount(People people,HashMap<People,List<Relatives>> graphOfRelations)
+    {
         Stack<People> stack = new Stack<>();
-        People start = peopleList.stream().filter(people -> people.getName().equalsIgnoreCase(name))
-                .collect(Collectors.toList()).get(0);
-        if (null != start)
+
+        if (null != people)
         {
-            stack.push(start);
-            start.setVisited(true);
+            stack.push(people);
+            people.setVisited(true);
         }
         int extendedFamilyCount = 0;
         while (!stack.isEmpty())
         {
             People poped = stack.pop();
             extendedFamilyCount++;
-            poped.getRelations().forEach(rel -> {
+            graphOfRelations.get(poped).forEach(rel -> {
                 if (!rel.getPerson().isVisited() && rel.getRelationShip().equals(Relation.FAMILY))
                 {
                     stack.push(rel.getPerson());
@@ -126,6 +140,9 @@ public class DataUtility
                 }
             });
         }
+        graphOfRelations.forEach( (person,relation) ->{
+            person.setVisited(false);
+        });
         return extendedFamilyCount;
     }
 

@@ -31,4 +31,9 @@ public class Relatives
     {
         this.person = person;
     }
+
+    @Override
+    public String toString() {
+        return this.person.getName() + " " + this.relationShip;
+    }
 }
