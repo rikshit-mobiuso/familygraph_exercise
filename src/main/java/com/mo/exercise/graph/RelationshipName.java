@@ -1,4 +1,4 @@
-package com.mo.exercise.graph.constants;
+package com.mo.exercise.graph;
 
 public enum RelationshipName {
     FAMILY,

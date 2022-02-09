@@ -1,4 +1,4 @@
-package com.mo.exercise.graph.constants;
+package com.mo.exercise.graph;
 
 public class CsvPaths {
     public static final String FILEPATHOFPEOPLECSV = "src/test/resources/people.csv";
