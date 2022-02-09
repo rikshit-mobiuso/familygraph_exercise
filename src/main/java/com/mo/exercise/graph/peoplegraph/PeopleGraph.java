@@ -9,7 +9,7 @@ import com.mo.exercise.graph.utility.CsvDataReader;
 import com.opencsv.exceptions.CsvException;
 
 public class PeopleGraph {
-    private static Map<String, Person> map;
+    private static Map<String, Person> personMap;
 
     static {
         try {
@@ -21,12 +21,12 @@ public class PeopleGraph {
         }
     }
 
-    public static void setMap(Map<String, Person> map) {
-        PeopleGraph.map = map;
+    public static void setPersonMap(Map<String, Person> personMap) {
+        PeopleGraph.personMap = personMap;
     }
 
     public static Person getPersonByEmail(String email) {
-        return map.get(email);
+        return personMap.get(email);
     }
 
     public static void addToFamily(Person person1, Person person2) {
@@ -40,11 +40,11 @@ public class PeopleGraph {
     }
 
     public static boolean isEmpty() {
-        return map.isEmpty();
+        return personMap.isEmpty();
     }
 
     public static int size() {
-        return map.size();
+        return personMap.size();
     }
 
     public static int getExtendedFamilySize(Person person) {
@@ -53,7 +53,7 @@ public class PeopleGraph {
     }
 
     public static void print() {
-        map.values().stream()
+        personMap.values().stream()
                 .forEach(p -> System.out.println(
                         p.getName() + " : "
                                 + "Family: " + p.getFamily().size()

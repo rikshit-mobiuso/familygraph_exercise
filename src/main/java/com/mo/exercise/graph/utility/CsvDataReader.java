@@ -28,7 +28,7 @@ public class CsvDataReader {
                 .stream()
                 .map(Person::new)
                 .collect(Collectors.toMap(Person::getEmail, Function.identity()));
-        PeopleGraph.setMap(people);
+        PeopleGraph.setPersonMap(people);
     }
 
     private static void readRelationships() throws IOException, CsvException {
