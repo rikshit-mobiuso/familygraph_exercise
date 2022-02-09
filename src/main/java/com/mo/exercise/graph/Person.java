@@ -1,5 +1,6 @@
 package com.mo.exercise.graph;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Person {
     private String name;

@@ -1,13 +1,26 @@
 package com.mo.exercise.graph;
-import java.util.*;
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import com.mo.exercise.graph.CsvDataReader;
 import com.mo.exercise.graph.Person;
+import com.opencsv.exceptions.CsvException;
+
+import static com.mo.exercise.graph.CsvDataReader.*;
 
 public class People {
     private static Map<String, Person> map;
 
     static {
-        CsvPeopleReader.readFromCsv();
+        try {
+            readFromCsv();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (CsvException e) {
+            e.printStackTrace();
+        }
     }
 
     public static void setMap(Map<String, Person> map) {

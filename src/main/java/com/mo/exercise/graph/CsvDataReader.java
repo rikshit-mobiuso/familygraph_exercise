@@ -17,7 +17,7 @@ public class CsvDataReader {
     private static CSVReader reader;
 
     // This Application makes use of OpenCSV library to Read Csv files
-    public static void readFromCsv() {
+    public static void readFromCsv() throws IOException, CsvException {
             readPeople();
             readRelationships();
     }
