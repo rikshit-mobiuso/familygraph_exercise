@@ -1,11 +1,12 @@
 package com.mo.exercise.graph;
-
+import com.mo.exercise.graph.constants.CsvPaths;
+import com.mo.exercise.graph.entities.Person;
+import com.mo.exercise.graph.peoplegraph.People;
 import org.junit.Test;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
-import com.mo.exercise.graph.CsvPaths;
-import com.mo.exercise.graph.Person;
+import com.mo.exercise.graph.constants.CsvPaths;
 
 import static org.junit.Assert.*;
 
@@ -22,7 +23,7 @@ public class PeopleTest {
     public void testPeopleMapIsCorrectlyPopulated() throws IOException, CsvException {
         assertFalse(People.isEmpty());
 
-        reader = new CSVReader(new FileReader(CsvPaths.FILEPATHOFPEOPLECSV));
+        reader = new CSVReader(new FileReader(CsvPaths.PEOPLE_CSV_FILE_PATH));
 
         int size = reader.readAll().size();
         assertEquals(size, People.size());

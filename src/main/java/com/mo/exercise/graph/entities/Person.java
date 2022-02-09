@@ -1,4 +1,4 @@
-package com.mo.exercise.graph;
+package com.mo.exercise.graph.entities;
 import java.util.HashSet;
 import java.util.Set;
 

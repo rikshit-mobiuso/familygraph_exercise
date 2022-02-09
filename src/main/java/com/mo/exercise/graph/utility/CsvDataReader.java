@@ -1,7 +1,9 @@
-package com.mo.exercise.graph;
+package com.mo.exercise.graph.utility;
 
-import com.mo.exercise.graph.CsvPaths;
-import com.mo.exercise.graph.RelationshipName;
+import com.mo.exercise.graph.peoplegraph.People;
+import com.mo.exercise.graph.entities.Person;
+import com.mo.exercise.graph.constants.CsvPaths;
+import com.mo.exercise.graph.constants.RelationshipType;
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 
@@ -16,14 +18,13 @@ public class CsvDataReader {
 
     private static CSVReader reader;
 
-    // This Application makes use of OpenCSV library to Read Csv files
     public static void readFromCsv() throws IOException, CsvException {
             readPeople();
             readRelationships();
     }
 
     private static void readPeople() throws IOException, CsvException {
-        reader = new CSVReader(new FileReader(CsvPaths.FILEPATHOFPEOPLECSV));
+        reader = new CSVReader(new FileReader(CsvPaths.PEOPLE_CSV_FILE_PATH));
         Map<String, Person> people = reader.readAll()
                 .stream()
                 .map(Person::new)
@@ -32,12 +33,12 @@ public class CsvDataReader {
     }
 
     private static void readRelationships() throws IOException, CsvException {
-        reader = new CSVReader(new FileReader(CsvPaths.FILEPATHOFRELATIONSHIPSCSV));
+        reader = new CSVReader(new FileReader(CsvPaths.RELATIONSHIPS_CSV_FILE_PATH));
         reader.readAll().forEach(data -> {
             if (data.length == 3) {
                 String email1 = data[0], relation = data[1], email2 = data[2];
                 Person p1 = People.getPersonByEmail(email1), p2 = People.getPersonByEmail(email2);
-                if (relation.equals(RelationshipName.FAMILY))
+                if (relation.equals(RelationshipType.FAMILY))
                     People.addToFamily(p1, p2);
                 else
                     People.addToFriends(p1, p2);
