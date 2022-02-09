@@ -8,9 +8,7 @@ import com.mo.exercise.graph.entities.Person;
 import com.mo.exercise.graph.utility.CsvDataReader;
 import com.opencsv.exceptions.CsvException;
 
-import static com.mo.exercise.graph.utility.CsvDataReader.*;
-
-public class People {
+public class PeopleGraph {
     private static Map<String, Person> map;
 
     static {
@@ -24,7 +22,7 @@ public class People {
     }
 
     public static void setMap(Map<String, Person> map) {
-        People.map = map;
+        PeopleGraph.map = map;
     }
 
     public static Person getPersonByEmail(String email) {
@@ -57,7 +55,13 @@ public class People {
     public static void print() {
         map.values().stream()
                 .forEach(p -> System.out.println(
-                        p.getName() + " " + p.getEmail() + " " + p.getAge()
-                                + " Family: " + p.getFamily().size() + " Friends: " + p.getFriends().size()));
+                        p.getName() + " : "
+                                + "Family: " + p.getFamily().size()
+                                + ", Friends: " + p.getFriends().size()
+                                +", Extended Family Count : " + getExtendedFamilySize(p)));
+    }
+
+    public static void main(String[] args) {
+        print();
     }
 }

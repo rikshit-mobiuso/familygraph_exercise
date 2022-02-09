@@ -1,12 +1,11 @@
 package com.mo.exercise.graph;
-import com.mo.exercise.graph.constants.CsvPaths;
+import com.mo.exercise.graph.constants.FilePaths;
 import com.mo.exercise.graph.entities.Person;
-import com.mo.exercise.graph.peoplegraph.People;
+import com.mo.exercise.graph.peoplegraph.PeopleGraph;
 import org.junit.Test;
 
 import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
-import com.mo.exercise.graph.constants.CsvPaths;
 
 import static org.junit.Assert.*;
 
@@ -15,18 +14,18 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PeopleTest {
+public class PeopleGraphTest {
 
     CSVReader reader;
 
     @Test
     public void testPeopleMapIsCorrectlyPopulated() throws IOException, CsvException {
-        assertFalse(People.isEmpty());
+        assertFalse(PeopleGraph.isEmpty());
 
-        reader = new CSVReader(new FileReader(CsvPaths.PEOPLE_CSV_FILE_PATH));
+        reader = new CSVReader(new FileReader(FilePaths.PEOPLE_CSV_FILE_PATH));
 
         int size = reader.readAll().size();
-        assertEquals(size, People.size());
+        assertEquals(size, PeopleGraph.size());
     }
 
     @Test
@@ -38,18 +37,18 @@ public class PeopleTest {
         numberOfRelationsByUser.put("alan@lonely.org", 0);
 
         numberOfRelationsByUser.forEach((email, num) -> {
-            Person person = People.getPersonByEmail(email);
+            Person person = PeopleGraph.getPersonByEmail(email);
             assertEquals(num, person.getRelationshipNumber());
         });
     }
 
     @Test
     public void testExtendedFamilySize() {
-        Person jenny = People.getPersonByEmail("jenny@toys.com");
-        Person bob = People.getPersonByEmail("bob@bob.com");
+        Person jenny = PeopleGraph.getPersonByEmail("jenny@toys.com");
+        Person bob = PeopleGraph.getPersonByEmail("bob@bob.com");
 
-        assertEquals(4, People.getExtendedFamilySize(jenny));
-        assertEquals(4, People.getExtendedFamilySize(bob));
+        assertEquals(4, PeopleGraph.getExtendedFamilySize(jenny));
+        assertEquals(4, PeopleGraph.getExtendedFamilySize(bob));
     }
 
 }

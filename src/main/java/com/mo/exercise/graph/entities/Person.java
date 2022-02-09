@@ -31,7 +31,6 @@ public class Person {
         return friends;
     }
 
-
     public void addFamily(Person person) {
         this.family.add(person);
     }
@@ -46,12 +45,10 @@ public class Person {
 
     public Set<String> getExtendedFamily(Set<String> set) {
         set.add(email);
-
         this.family.forEach(p -> {
             if (!set.contains(p.email))
                 p.getExtendedFamily(set);
         });
-
         return set;
     }
 }

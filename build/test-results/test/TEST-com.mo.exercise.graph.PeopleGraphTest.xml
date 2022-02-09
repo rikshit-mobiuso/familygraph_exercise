@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.mo.exercise.graph.PeopleGraphTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2022-02-09T08:51:19" hostname="RIKSHIT-PC" time="0.036">
+  <properties/>
+  <testcase name="testExtendedFamilySize" classname="com.mo.exercise.graph.PeopleGraphTest" time="0.034"/>
+  <testcase name="testPeopleMapIsCorrectlyPopulated" classname="com.mo.exercise.graph.PeopleGraphTest" time="0.001"/>
+  <testcase name="testPeopleRelationships" classname="com.mo.exercise.graph.PeopleGraphTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
