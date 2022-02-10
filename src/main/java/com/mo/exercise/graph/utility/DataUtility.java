@@ -10,10 +10,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import com.opencsv.CSVReader;
 
 import static com.mo.exercise.graph.peoplegraph.PeopleGraph.addToRelationMaps;
 
-public class CsvDataReader {
+public class DataUtility {
 
     public static void readFromCsv(){
             readPeople();

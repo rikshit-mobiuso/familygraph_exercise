@@ -3,13 +3,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import com.mo.exercise.graph.entities.Person;
-import com.mo.exercise.graph.utility.CsvDataReader;
-import static com.mo.exercise.graph.utility.CsvDataReader.readRelationships;
+import com.mo.exercise.graph.utility.DataUtility;
+import static com.mo.exercise.graph.utility.DataUtility.readRelationships;
 
 public class PeopleGraph {
     private static Map<String, Person> personMap;
     static {
-        CsvDataReader.readFromCsv();
+        DataUtility.readFromCsv();
     }
 
     public static void setPersonMap(Map<String, Person> personMap) {

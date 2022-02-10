@@ -1,12 +1,10 @@
 package com.mo.exercise.graph;
-import com.mo.exercise.graph.constants.FilePaths;
 import com.mo.exercise.graph.entities.Person;
 import com.mo.exercise.graph.peoplegraph.PeopleGraph;
 import org.junit.Test;
-import static com.mo.exercise.graph.utility.CsvDataReader.readFromCsv;
+import static com.mo.exercise.graph.utility.DataUtility.readFromCsv;
 import static org.junit.Assert.*;
-import java.io.FileReader;
-import java.io.IOException;
+
 import java.util.HashMap;
 import java.util.Map;
 
