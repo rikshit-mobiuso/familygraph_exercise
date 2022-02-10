@@ -48,8 +48,8 @@ public class PeopleGraph {
     }
 
     public static int getExtendedFamilySize(Person person) {
-        Set<String> set = new HashSet<String>();
-        return person.getExtendedFamily(set).size();
+        Set<String> extendedFamilySet = new HashSet<String>();
+        return person.getExtendedFamily(extendedFamilySet).size();
     }
 
     public static void print() {
