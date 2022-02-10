@@ -1,24 +1,15 @@
 package com.mo.exercise.graph.peoplegraph;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import com.mo.exercise.graph.entities.Person;
 import com.mo.exercise.graph.utility.CsvDataReader;
-import com.opencsv.exceptions.CsvException;
+import static com.mo.exercise.graph.utility.CsvDataReader.readRelationships;
 
 public class PeopleGraph {
     private static Map<String, Person> personMap;
-
     static {
-        try {
-            CsvDataReader.readFromCsv();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (CsvException e) {
-            e.printStackTrace();
-        }
+        CsvDataReader.readFromCsv();
     }
 
     public static void setPersonMap(Map<String, Person> personMap) {
@@ -39,10 +30,6 @@ public class PeopleGraph {
         person2.addFriend(person1);
     }
 
-    public static boolean isEmpty() {
-        return personMap.isEmpty();
-    }
-
     public static int size() {
         return personMap.size();
     }
@@ -50,6 +37,18 @@ public class PeopleGraph {
     public static int getExtendedFamilySize(Person person) {
         Set<String> extendedFamilySet = new HashSet<String>();
         return person.getExtendedFamily(extendedFamilySet).size();
+    }
+
+    public static void addToRelationMaps() {
+        readRelationships().forEach(line-> {
+            String[] relationship = line.split(",");
+            String email1 = relationship[0], relation = relationship[1], email2 = relationship[2];
+                Person p1 = PeopleGraph.getPersonByEmail(email1), p2 = PeopleGraph.getPersonByEmail(email2);
+                if (relation.equals("FAMILY"))
+                    PeopleGraph.addToFamily(p1, p2);
+                else if(relation.equals("FRIEND"))
+                    PeopleGraph.addToFriends(p1, p2);
+        });
     }
 
     public static void print() {

@@ -3,44 +3,62 @@ package com.mo.exercise.graph.utility;
 import com.mo.exercise.graph.peoplegraph.PeopleGraph;
 import com.mo.exercise.graph.entities.Person;
 import com.mo.exercise.graph.constants.FilePaths;
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
-
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static com.mo.exercise.graph.peoplegraph.PeopleGraph.addToRelationMaps;
 
 public class CsvDataReader {
 
-    private static CSVReader reader;
-
-    public static void readFromCsv() throws IOException, CsvException {
+    public static void readFromCsv(){
             readPeople();
-            readRelationships();
+            addToRelationMaps();
     }
 
-    private static void readPeople() throws IOException, CsvException {
-        reader = new CSVReader(new FileReader(FilePaths.PEOPLE_CSV_FILE_PATH));
-        Map<String, Person> people = reader.readAll()
-                .stream()
-                .map(Person::new)
-                .collect(Collectors.toMap(Person::getEmail, Function.identity()));
-        PeopleGraph.setPersonMap(people);
-    }
+    private static void readPeople(){
 
-    private static void readRelationships() throws IOException, CsvException {
-        reader = new CSVReader(new FileReader(FilePaths.RELATIONSHIPS_CSV_FILE_PATH));
-        reader.readAll().forEach(data -> {
-            if (data.length == 3) {
-                String email1 = data[0], relation = data[1], email2 = data[2];
-                Person p1 = PeopleGraph.getPersonByEmail(email1), p2 = PeopleGraph.getPersonByEmail(email2);
-                if (relation.equals("FAMILY"))
-                    PeopleGraph.addToFamily(p1, p2);
-                else if(relation.equals("FRIEND"))
-                    PeopleGraph.addToFriends(p1, p2);
+        HashMap<String, Person> personMap =new HashMap<>();
+
+        try (FileReader fr = new FileReader(FilePaths.PEOPLE_CSV_FILE_PATH);
+             BufferedReader br = new BufferedReader(fr);){
+
+            // read line by line
+            String line;
+            while((line = br.readLine()) != null){
+                String[] person = line.split(",");
+                Person p = new Person(person[0],person[1],Short.valueOf(person[2]));
+                personMap.put(person[1],p);
             }
-        });
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        PeopleGraph.setPersonMap(personMap);
+    }
+
+    public static List<String> readRelationships() {
+        List<String> relationshipList = new ArrayList<>();
+
+        try (FileReader fr = new FileReader(FilePaths.RELATIONSHIPS_CSV_FILE_PATH);
+        BufferedReader br = new BufferedReader(fr);) {
+            // read line by line
+
+            String line;
+            while ((line=br.readLine()) !=null) {
+                if(line.trim().length()==0) {
+                    continue;
+                }
+                relationshipList.add(line);
+            }
+        } catch (IOException e) {
+            System.err.format("IOException: %s%n",e);
+        }
+        return relationshipList;
     }
 }

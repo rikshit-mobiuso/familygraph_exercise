@@ -9,10 +9,10 @@ public class Person {
     private Set<Person> family = new HashSet<Person>();
     private Set<Person> friends = new HashSet<Person>();
 
-    public Person(String[] data) {
-        this.name = data[0];
-        this.email = data[1];
-        this.age =  Short.parseShort(data[2]);
+    public Person(String name, String email, Short age) {
+        this.name = name;
+        this.email = email;
+        this.age = age;
     }
 
     public String getName() {

@@ -3,12 +3,8 @@ import com.mo.exercise.graph.constants.FilePaths;
 import com.mo.exercise.graph.entities.Person;
 import com.mo.exercise.graph.peoplegraph.PeopleGraph;
 import org.junit.Test;
-
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
-
+import static com.mo.exercise.graph.utility.CsvDataReader.readFromCsv;
 import static org.junit.Assert.*;
-
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,20 +12,15 @@ import java.util.Map;
 
 public class PeopleGraphTest {
 
-    CSVReader reader;
-
     @Test
-    public void testPeopleMapIsCorrectlyPopulated() throws IOException, CsvException {
-        assertFalse(PeopleGraph.isEmpty());
+    public void testPeopleMapIsCorrectlyPopulated() {
 
-        reader = new CSVReader(new FileReader(FilePaths.PEOPLE_CSV_FILE_PATH));
-
-        int size = reader.readAll().size();
-        assertEquals(size, PeopleGraph.size());
+        readFromCsv();
+        assertEquals(12, PeopleGraph.size());
     }
 
     @Test
-    public void testPeopleRelationships() throws IOException, CsvException {
+    public void testPeopleRelationships() {
         Map<String, Integer> numberOfRelationsByUser = new HashMap<String, Integer>();
         numberOfRelationsByUser.put("bob@bob.com", 4);
         numberOfRelationsByUser.put("jenny@toys.com", 3);
@@ -50,5 +41,4 @@ public class PeopleGraphTest {
         assertEquals(4, PeopleGraph.getExtendedFamilySize(jenny));
         assertEquals(4, PeopleGraph.getExtendedFamilySize(bob));
     }
-
 }
