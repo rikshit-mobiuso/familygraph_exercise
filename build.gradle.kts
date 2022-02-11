@@ -12,7 +12,7 @@ dependencies {
     compile( kotlin("stdlib") )
     compile("com.google.guava:guava:18.0")
     compile( "org.apache.commons:commons-lang3:3.3.2")
-    compile ("com.opencsv:opencsv:5.1")
+    compile ("com.opencsv:opencsv:5.5.2")
     testCompile("junit:junit:4.+")
 }
 

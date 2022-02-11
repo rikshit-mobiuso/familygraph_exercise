@@ -1,10 +1,13 @@
 package com.mo.exercise.graph.peoplegraph;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
+
 import com.mo.exercise.graph.entities.Person;
 import com.mo.exercise.graph.utility.DataUtility;
+
 import static com.mo.exercise.graph.utility.DataUtility.readRelationships;
+
+import com.opencsv.exceptions.CsvException;
 
 public class PeopleGraph {
     private static Map<String, Person> personMap;
@@ -60,7 +63,7 @@ public class PeopleGraph {
                                 +", Extended Family Count : " + getExtendedFamilySize(p)));
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, CsvException {
         print();
     }
 }
